@@ -1,4 +1,4 @@
-https://rawgit.com/justKD/powerup-story-sequence-designer/master/index.html
+https://rawgit.com/systers/powerup-story-designer/master/index.html
 
 # current state
 ***
