@@ -1,0 +1,510 @@
+<!doctype html>
+
+<html lang="en">
+
+<head>
+
+  <meta charset="utf-8">
+
+  <title>PowerUp Story Sequence Designer</title>
+  <meta name="PowerUp Story Sequence Designer" content="">
+
+  <link href="library/simplebar/simplebar-2.6.1.css" rel="stylesheet" type="text/css">
+  <link href="library/noty/noty.css" rel="stylesheet" type="text/css">
+  <link href="css/app.less" rel="stylesheet/less" type="text/css" />
+
+</head>
+
+<body>
+
+  <div class="preloader-container">
+    <div class='loader'>
+      <div class='loader--dot'></div>
+      <div class='loader--dot'></div>
+      <div class='loader--dot'></div>
+      <div class='loader--dot'></div>
+      <div class='loader--dot'></div>
+      <div class='loader--dot'></div>
+      <div class='loader--text'></div>
+    </div>
+  </div>
+
+  <div class="popup-container" id="help-popup">
+    <div class="popup-container-inner" id="help-popup-inner">
+      <div class="popup-close-button" id="help-close">
+        <div>X</div>
+      </div>
+
+      <div v-on:click="focus" class="popup-content-container" id="popup-content-states">
+
+        <div class="popup-content-header">
+          <!-- <button class='popup-content-button popup-content-button-faded' id='save-state-button' v-on:click="handleSave">Save</button>
+            <button class='popup-content-button popup-content-button-faded' id='load-state-button' v-on:click="handleLoad">Load</button>
+            <button class='popup-content-button popup-content-button-faded' id='rename-state-button' v-on:click="checkRename">Rename</button>
+            <button class='popup-content-button popup-content-button-faded' id='delete-state-button' v-on:click="handleDelete">Delete</button>
+            <div></div> -->
+        </div>
+
+        <div class="popup-content-columns">
+          <div class="popup-column left-column">
+
+            <ul>
+              <strong>General</strong>
+              <br>
+              <br>
+              <li>This is a tool for creating automated step-through story sequences in PowerUp.</li>
+              <li>Each card represents a 'step', with a left and right event.</li>
+              <li>It's features include:</li>
+              <ul>
+                <li>Undo/Redo History</li>
+                <li>Multiple Saved States</li>
+                <li>Export work session file in JSON format.</li>
+                <li>Export StorySequences.json, a file that can be dropped into PowerUp.</li>
+              </ul>
+              <li>Media assets between this project and the main PowerUp repos will need to be manually kept in sync.</li>
+            </ul>
+
+            <ul>
+              <strong>Current State</strong>
+              <br>
+              <br>
+              <li>Best in Chrome</li>
+              <li>Works in Firefox and Safari</li>
+            </ul>
+
+            <ul>
+              <strong>Basic Functions</strong>
+              <br>
+              <br>
+              <li>click the add button to add new cards</li>
+              <li>click a card or thumbnail to focus</li>
+              <li>new cards default to the `'no change'` setting for image and position fields</li>
+              <ul>
+                <li>this means a new card will automatically visualize the image and position from the previous card</li>
+                <li>changing a prior card will auto-update any cards that would be affected due to a `no change` setting</li>
+              </ul>
+            </ul>
+
+          </div>
+
+          <div class="popup-column right-column">
+
+            <ul>
+              <strong>Hotkeys</strong>
+              <br>
+              <br>
+              <li>`ctrl + n` - add a new card</li>
+              <li>`ctrl + z` - undo action</li>
+              <li>`ctrl + y` - redo action</li>
+              <li>`ctrl + s` - save over last saved state</li>
+              <li>`ctrl + d` - prompt to download
+                <strong>work session</strong> file</li>
+              <li>`ctrl + u` - prompt to upload
+                <strong>work session</strong> file</li>
+              <li>`delete` - delete the currently focused card (currently the only way to delete a card)</li>
+            </ul>
+
+          </div>
+        </div>
+
+        <div class="popup-content-footer">
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="popup-container" id="saved-state-popup">
+    <div class="popup-container-inner" id="saved-state-popup-inner">
+      <div class="popup-close-button" id="saved-state-close">
+        <div>X</div>
+      </div>
+
+      <div v-on:click="focus" class="popup-content-container" id="popup-content-states">
+
+        <div class="popup-content-header">
+          <button class='popup-content-button popup-content-button-faded' id='save-state-button' v-on:click="handleSave">Save</button>
+          <button class='popup-content-button popup-content-button-faded' id='load-state-button' v-on:click="handleLoad">Load</button>
+          <button class='popup-content-button popup-content-button-faded' id='rename-state-button' v-on:click="checkRename">Rename</button>
+          <button class='popup-content-button popup-content-button-faded' id='delete-state-button' v-on:click="handleDelete">Delete</button>
+          <div></div>
+        </div>
+
+        <div class="popup-content-columns">
+          <div class="popup-column left-column">
+            <saved-state-slot-item v-for="state in savedStates.left" v-bind:state="state" v-bind:key="state.index"></saved-state-slot-item>
+          </div>
+
+          <div class="popup-column right-column">
+            <saved-state-slot-item v-for="state in savedStates.right" v-bind:state="state" v-bind:key="state.index"></saved-state-slot-item>
+          </div>
+        </div>
+
+        <div class="popup-content-footer">
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="popup-container" id="import-export-popup">
+    <div class="popup-container-inner" id="import-export-popup-inner">
+      <div class="popup-close-button" id="import-export-close">
+        <div>X</div>
+      </div>
+
+      <div class="popup-content-container" id="popup-content-export">
+
+        <div class="popup-content-header">
+          <button class='popup-content-button' id='download-button' v-on:click="handleDownload">Download</button>
+          <button class='popup-content-button' id='upload-button' v-on:click="handleUpload">Upload</button>
+          <button class='popup-content-button' id='export-button' v-on:click="handleExport">Export</button>
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="popup-container-inner" id="popup-content-export-options">
+
+      <div class="export-options-inner">
+
+        <div class="popup-content-header">
+          <div class="export-scenario-label"></div>
+          <div class="export-select-group">
+            <div class="export-select-container left">Intro</div>
+            <div class="export-select-container">Outro</div>
+          </div>
+        </div>
+
+        <div class="export-option-slot" id="home-scenario-group">
+
+          <div class="export-scenario-label">
+            <div>Home</div>
+          </div>
+
+          <export-select-container v-bind:options="options"></export-select-container>
+
+        </div>
+
+        <div class="export-option-slot" id="school-scenario-group">
+
+          <div class="export-scenario-label">
+            <div>School</div>
+          </div>
+
+          <export-select-container v-bind:options="options"></export-select-container>
+
+        </div>
+
+        <div class="export-option-slot" id="library-scenario-group">
+
+          <div class="export-scenario-label">
+            <div>Library</div>
+          </div>
+
+          <export-select-container v-bind:options="options"></export-select-container>
+
+        </div>
+
+        <div class="export-option-slot" id="hospital-scenario-group">
+
+          <div class="export-scenario-label">
+            <div>Hospital</div>
+          </div>
+
+          <export-select-container v-bind:options="options"></export-select-container>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <div class="app" style='display: none'>
+    <div class="main-container">
+      <div class="top-container">
+        <div class="thumbnail-container">
+
+          <!-- Thumbnail Track -->
+          <div class="thumbnail-container-inner" id="thumbnail-container-inner">
+
+            <!-- Add Button -->
+            <div id="thumbnail-add-button" class="thumbnail-add-container">
+              <div class="thumbnail-add">
+                <div>+</div>
+              </div>
+            </div>
+
+            <!-- Thumbnail Section -->
+            <div class="thumbnail-section">
+              <div class="thumbnail-section-inner">
+                <transition-group name="thumbnail-list-transitions" tag='div' class='thumbnail-section-transition-wrapper'>
+                  <thumbnail-item v-for="thumbnail in thumbnails" v-bind:thumbnail="thumbnail" v-bind:key="thumbnail.id"></thumbnail-item>
+                </transition-group>
+                <div class="thumbnail-spacer"></div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="menu-container">
+          <div class="menu-container-inner">
+
+            <div class="menu-container-inner-inner">
+
+              <div class="menu-item button" id="menu-undo">
+                undo
+                <!-- <img src="images/save.png" class="menu-button-image"> -->
+              </div>
+
+              <div class="menu-item button" id="menu-redo">
+                redo
+                <!-- <img src="images/save.png" class="menu-button-image"> -->
+              </div>
+
+              <div class="menu-item button" id="menu-states">
+                states
+                <!-- <img src="images/save.png" class="menu-button-image"> -->
+              </div>
+
+              <div class="menu-item button" id="menu-export">
+                export
+                <!-- <img src="images/save.png" class="menu-button-image"> -->
+              </div>
+
+              <div class="menu-item button" id="menu-help">
+                help
+                <!-- <img src="images/save.png" class="menu-button-image"> -->
+              </div>
+
+            </div>
+
+            <menu-select-container id="menu-selects" v-bind:options="options"></menu-select-container>
+
+          </div>
+
+          <!-- end .menu-container -->
+        </div>
+
+        <!-- end .top-container -->
+      </div>
+
+      <div class="bottom-container">
+
+        <div class="card-container" id="card-container">
+
+          <div class="fade-overlay card-fade"></div>
+
+          <div class="card-container-inner" id="card-container-inner">
+
+            <transition-group name="card-list-transitions">
+              <card-item v-for="card in cards" v-bind:card="card" v-bind:key="card.id"></card-item>
+            </transition-group>
+
+            <div class="card-spacer"></div>
+
+            <!-- end .card-container-inner -->
+          </div>
+
+          <!-- end .card-container -->
+        </div>
+
+        <div class="options-container">
+          <div class="fade-overlay options-fade"></div>
+          <div class="options-container-inner">
+
+            <div class="options-form-container">
+
+              <form class="options-form" id="options-form" name="options-form" data-name="options-form">
+
+                <!-- Start left options -->
+                <div class="options-section" id="left-options-section">
+
+                  <div class="options-section-heading-container">
+                    <div class="options-section-heading">Left</div>
+                    <div class="options-section-line"></div>
+                  </div>
+
+                  <div class="option-container">
+                    <label class="option-field-label" for="option-left-text">Text</label>
+                    <textarea class="option-text-field" id="option-left-text" name="option-left-text" placeholder="none" data-name="option-left-text"
+                      maxlength=""></textarea>
+                  </div>
+
+                  <div class="option-container">
+                    <label class="option-field-label" for="option-left-image-select">Image</label>
+                    <div class="option-select-container">
+                      <div class="option-select-image-container">
+                        <img class="option-select-image" src="images/triangle-3px.png">
+                      </div>
+                      <select class="option-select" id="option-left-image-select" name="option-left-image-select" data-name="option-left-image-select">
+
+                        <option v-for="option in options" v-bind:value="option.value">
+                          {{ option.text }}
+                        </option>
+
+                      </select>
+                    </div>
+                  </div>
+
+                  <!-- #left-options-group -->
+                  <div class="option-container-group" id="left-options-group">
+
+                    <!-- #option-left-position-select -->
+                    <div class="option-container group-left">
+                      <label class="option-field-label" for="option-left-position-select">Position</label>
+                      <div class="option-select-container">
+                        <div class="option-select-image-container">
+                          <img class="option-select-image" src="images/triangle-3px.png">
+                        </div>
+
+                        <select class="option-select" id="option-left-position-select" name="option-left-position-select" data-name="option-left-position-select">
+
+                          <option v-for="option in options" v-bind:value="option.value">
+                            {{ option.text }}
+                          </option>
+
+                        </select>
+                      </div>
+                    </div>
+
+                    <!-- #option-left-animation-select -->
+                    <div class="option-container group-right">
+                      <label class="option-field-label" for="option-left-animation-select">Animation</label>
+                      <div class="option-select-container">
+                        <div class="option-select-image-container">
+                          <img class="option-select-image" src="images/triangle-3px.png">
+                        </div>
+                        <select class="option-select" id="option-left-animation-select" name="option-left-animation-select" data-name="option-left-animation-select">
+
+                          <option v-for="option in options" v-bind:value="option.value">
+                            {{ option.text }}
+                          </option>
+
+                        </select>
+                      </div>
+                    </div>
+
+                    <!-- end #left-options-group -->
+                  </div>
+
+                  <!-- end #left-options-section -->
+                </div>
+
+                <!-- Start right options -->
+                <div class="options-section" id="right-options-section">
+
+                  <div class="options-section-heading-container">
+                    <div class="options-section-heading">Right</div>
+                    <div class="options-section-line"></div>
+                  </div>
+
+                  <div class="option-container">
+                    <label class="option-field-label" for="option-right-text">Text</label>
+                    <textarea class="option-text-field" id="option-right-text" name="option-right-text" placeholder="none" data-name="option-right-text"
+                      maxlength=""></textarea>
+                  </div>
+
+                  <div class="option-container">
+                    <label class="option-field-label" for="option-right-image-select">Image</label>
+                    <div class="option-select-container">
+                      <div class="option-select-image-container">
+                        <img class="option-select-image" src="images/triangle-3px.png">
+                      </div>
+                      <select class="option-select" id="option-right-image-select" name="option-right-image-select" data-name="option-right-image-select">
+
+                        <option v-for="option in options" v-bind:value="option.value">
+                          {{ option.text }}
+                        </option>
+
+                      </select>
+                    </div>
+                  </div>
+
+                  <!-- #right-options-group -->
+                  <div class="option-container-group" id="right-options-group">
+
+                    <!-- #option-right-position-select -->
+                    <div class="option-container group-left">
+                      <label class="option-field-label" for="option-right-position-select">Position</label>
+                      <div class="option-select-container">
+                        <div class="option-select-image-container">
+                          <img class="option-select-image" src="images/triangle-3px.png">
+                        </div>
+                        <select class="option-select" id="option-right-position-select" name="option-right-position-select" data-name="option-right-position-select">
+
+                          <option v-for="option in options" v-bind:value="option.value">
+                            {{ option.text }}
+                          </option>
+
+                        </select>
+                      </div>
+                    </div>
+
+                    <!-- #option-right-animation-select -->
+                    <div class="option-container group-right">
+                      <label class="option-field-label" for="option-right-animation-select">Animation</label>
+                      <div class="option-select-container">
+                        <div class="option-select-image-container">
+                          <img class="option-select-image" src="images/triangle-3px.png">
+                        </div>
+                        <select class="option-select" id="option-right-animation-select" name="option-right-animation-select" data-name="option-right-animation-select">
+
+                          <option v-for="option in options" v-bind:value="option.value">
+                            {{ option.text }}
+                          </option>
+
+                        </select>
+                      </div>
+                    </div>
+
+                    <!-- end #right-options-group -->
+                  </div>
+
+                  <!-- end #right-options-section -->
+                </div>
+
+                <!-- end .options-form -->
+              </form>
+
+              <!-- end .options-container-inner -->
+            </div>
+
+            <!-- end .options-container-inner -->
+          </div>
+
+          <!-- end .thumbnail-container -->
+        </div>
+
+        <!-- end .bottom-container -->
+      </div>
+
+      <!-- end .main-container -->
+    </div>
+
+    <!-- end .app -->
+  </div>
+
+
+  <!-- <script src="https://cdn.jsdelivr.net/npm/vue"></script> -->
+  <script src="library/vue-2.5.16.js"></script>
+  <script src="library/less.3.5.0.min.js"></script>
+  <script src="library/jquery-3.3.1.min.js"></script>
+  <script src="library/simplebar/simplebar-2.6.1.js"></script>
+  <script src="library/noty/noty.min.js"></script>
+  <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.14.1/lodash.min.js"></script> -->
+
+  <script src="js/classes.js"></script>
+  <script src="js/components.js"></script>
+  <script src="js/utility.js"></script>
+  <script src="js/app.js"></script>
+
+</body>
+
+</html>
