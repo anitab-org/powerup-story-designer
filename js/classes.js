@@ -90,9 +90,9 @@ class StorySequence {
 }
 
 class StorySequenceStep {
-    constructor(left, right) {
-        this.left = left
-        this.right = right
+    constructor(lftEvent, rgtEvent) {
+        this.lftEvent = lftEvent
+        this.rgtEvent = rgtEvent
     }
 }
 

@@ -4,7 +4,7 @@
 
 const constant = {
 
-    imagesFilePath: 'images/',
+    imagesFilePath: 'images/characters/',
 
     imagePositionSuperClass: 'card-image-container',
 
@@ -18,16 +18,48 @@ const constant = {
 
     musicOptions: [
         new Option(null, 'no music'),
-        new Option(1, '1-music-selection'),
-        new Option(2, '2-music-selection'),
-        new Option(3, '3-music-selection'),
-        new Option(4, '4-music-selection'),
+        new Option('home_intro_music_placeholder', 'home_intro_music_placeholder'),
+        new Option('home_good_ending_example', 'home_good_ending_example'),
     ],
 
     imageOptions: [
         new Option(null, 'no change'),
-        new Option('test_chibi_normal.png', 'Test - Normal'),
-        new Option('test2_chibi_smiling.png', 'Test2 - Happy'),
+        new Option('test_chibi^normal', 'Test Chibi - Normal'),
+        new Option('test_chibi^happy', 'Test Chibi - Happy'),
+        new Option('test_chibi^smiling', 'Test Chibi - Smiling'),
+        new Option('test_chibi^talking', 'Test Chibi - Talking'),
+        new Option('test_chibi^lecturing', 'Test Chibi - Happy'),
+        new Option('test_chibi^sad', 'Test Chibi - Sad'),
+        new Option('test_chibi^scared', 'Test Chibi - Scared'),
+        new Option('test_chibi^upset', 'Test Chibi - Upset'),
+        new Option('test_chibi^dazed', 'Test Chibi - Dazed'),
+        new Option('test_chibi^whatever', 'Test Chibi - Whatever'),
+        new Option('test_chibi^tired', 'Test Chibi - Tired'),
+
+        new Option('test2_chibi^normal', '2 Test Chibi - Normal'),
+        new Option('test2_chibi^happy', '2 Test Chibi - Happy'),
+        new Option('test2_chibi^smiling', '2 Test Chibi - Smiling'),
+        new Option('test2_chibi^talking', '2 Test Chibi - Talking'),
+        new Option('test2_chibi^lecturing', '2 Test Chibi - Happy'),
+        new Option('test2_chibi^sad', '2 Test Chibi - Sad'),
+        new Option('test2_chibi^scared', '2 Test Chibi - Scared'),
+        new Option('test2_chibi^upset', '2 Test Chibi - Upset'),
+        new Option('test2_chibi^dazed', '2 Test Chibi - Dazed'),
+        new Option('test2_chibi^whatever', '2 Test Chibi - Whatever'),
+        new Option('test2_chibi^tired', '2 Test Chibi - Tired'),
+
+        new Option('testChar3', '3 Another Test Char'),
+
+        new Option('test_data_example', 'Data Example Image'),
+    ],
+
+    animationOptions: [
+        new Option(null, 'none'),
+        new Option('shake', 'shake'),
+        new Option('tiltLeft', 'tilt left'),
+        new Option('tiltRight', 'tilt right'),
+        new Option('jiggle', 'jiggle'),
+        new Option('flip', 'flip'),
     ],
 
     leftPositionOptions: [
@@ -44,13 +76,6 @@ const constant = {
         new Option('right near', 'near'),
         new Option('right mid', 'mid'),
         new Option('right far', 'far'),
-    ],
-
-    animationOptions: [
-        new Option(null, 'none'),
-        new Option('shake', 'shake'),
-        new Option('tiltLeft', 'tilt left'),
-        new Option('tiltRight', 'tilt right'),
     ],
 
     leftInputs: {
@@ -1319,14 +1344,14 @@ const app = {
             /* Image inputs */
             const handleImageInput = (left, input) => {
 
-                const side = left ? self.focusedCard.card.left : self.focusedCard.card.right
-
                 const handleChange = _ => {
                     const cards = app.do.get.cards()
 
+                    const side = left ? self.focusedCard.card.left : self.focusedCard.card.right
+
                     /* If the value isn't null, change both the displayed image and value image */
                     const changeBoth = _ => {
-                        side.image = constant.imagesFilePath + $(input).val()
+                        side.image = constant.imagesFilePath + $(input).val() + '.png'
                         side.value.image = $(input).val()
                     }
 
@@ -1335,8 +1360,8 @@ const app = {
                     const setNoChange = _ => {
                         const card = cards[self.focusedCard.index - 1]
                         const image = left ? card.left.image : card.right.image
-                        const lastImage = image.split('/')[1]
-                        side.image = constant.imagesFilePath + lastImage
+                        const lastImage = image.split('/')[2]
+                        side.image = constant.imagesFilePath + lastImage + '.png'
                         side.value.image = null
                     }
 
@@ -1365,9 +1390,9 @@ const app = {
             /* Position Inputs */
             const handlePositionInput = (left, input) => {
 
-                const side = left ? self.focusedCard.card.left : self.focusedCard.card.right
-
                 const handleChange = _ => {
+                    const side = left ? self.focusedCard.card.left : self.focusedCard.card.right
+
                     side.position = constant.imagePositionSuperClass + ' ' + $(input).val()
                     side.value.position = $(input).val()
 
@@ -1389,6 +1414,35 @@ const app = {
 
             $(constant.rightInputs.pos).on('change', function (e) {
                 handlePositionInput(false, this)
+            })
+
+            /* Animation Inputs */
+            const handleAnimationInput = (left, input) => {
+
+                const handleChange = _ => {
+                    const side = left ? self.focusedCard.card.left : self.focusedCard.card.right
+
+                    side.animation = $(input).val()
+                    side.value.animation = $(input).val()
+
+                    app.do.card.updateRemaining()
+                    app.do.history.append()
+                }
+
+                const showWarning = _ => {
+                    $(input).val(' ')
+                    app.do.show.editWarning()
+                }
+
+                self.focusedCard.card ? handleChange() : showWarning()
+            }
+
+            $(constant.leftInputs.ani).on('change', function (e) {
+                handleAnimationInput(true, this)
+            })
+
+            $(constant.rightInputs.ani).on('change', function (e) {
+                handleAnimationInput(false, this)
             })
 
 
