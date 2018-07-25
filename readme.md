@@ -1,7 +1,29 @@
-https://rawgit.com/systers/powerup-story-designer/master/index.html
+
+***
+[Live Version](https://rawgit.com/justKD/powerup-story-sequence-designer/master/index.html)
+***
+
+This is a tool for creating and exporting automated step-through story sequences in PowerUp.
+
+Originally authored by: [@justKD](https://github.com/justKD)
+
+It's features include:
+- Undo/Redo History
+- Multiple Saved States
+- Export work session file in JSON format.
+- Export StorySequences.json, a file that can be dropped into PowerUp.
+
+![PowerUp Story Designer](https://github.com/systers/powerup-story-designer/blob/master/powerup-story-designer-example-image.jpg?raw=true "PowerUp Story Designer Example Image")
 
 # current state
+
+Best in Chrome. Works in Safari and Firefox. May work in Opera.
+
+**Media assets between this project and the main PowerUp repos will need to be manually kept in sync.**
+**Names for the assets need to be identical.**
+
 ***
+
 - dependencies
     - [VueJS](https://vuejs.org/) - for data-reactive front-end
     - [less](http://lesscss.org/) - for cleaner css
@@ -11,85 +33,42 @@ https://rawgit.com/systers/powerup-story-designer/master/index.html
     - [Noty](https://ned.im/noty/#/) - notifications
     - [SimpleBar](http://grsmto.github.io/simplebar/) - cross-browser customizable scroll bars
 ***
-- best in chrome
-- should work in firefox
-- safari 
-    - no smooth scroll
-        - .scrollIntoView options are not implemented in the browser
-    - simpleBar plugin was not working with one container in safari, but seems to be ok now
-        - keep an eye out for issues
-        - update: issue is not there when adding new cards, but the thumbnail container shifts up when a card is focused
-            - does the issue occur anytime the update thumbnails function is called?
-            - Simple bar is not rendering in the same place in that div as it does in firefox and chrome. The html/css may need to be re-worked, or simple bar may need to be left off of that section.
-- the fading gradients in firefox and safari render differently compared to chrome
-    - the gradient at the bottom of the card container is wrong in firefox and safari
-    - it is correct in chrome
-***
 - hotkeys
     - `ctrl + n` - add a new card
     - `ctrl + z` - undo action
     - `ctrl + y` - redo action
     - `ctrl + s` - save over last saved state
-    - `ctrl + d` - prompt download save file
-    - `ctrl + u` - prompt upload saved file
-    - `delete` - delete the currently focused card
+    - `ctrl + d` - prompt download work session file
+    - `ctrl + u` - prompt upload work session file
+    - `delete` - delete the currently focused card (currently the only way to delete a card)
 ***
-- click a card or thumbnail to focus
-    - editor will populate with that cards data
-    - edit fields - card and thumbnail will update in real time
+#Basic Functionality
 - click the add button to add new cards
-- focus a card and hit your `<delete>` key to delete
-    - you can't delete the last card (there must be one)
-    - * (maybe need to add a clickable delete button)
-
+- click a card or thumbnail to focus
 - new cards default to the `'no change'` setting for image and position fields
-    - this means a new card will visualize the image and position from the previous card, but its field value will be `null`
+    - this means a new card will automatically visualize the image and position from the previous card
     - changing a prior card will auto-update any cards that would be affected due to a `no change` setting
 ***
-- has undo/redo functionality
-    - changes to text are committed to history only when the text field is de-focused even though the cards update in real-time as you type
-- history functionality is currently unlimited
-    - need to evaluate this but memory limitations are not expected due to general use expectations
-    - maybe put a really high hard limit in any case
-- overwrites any existing history if new actions are added after undoing
+#Saved States
+- clicking an empty slot and selecting save will prompt you to name the slot, return to save
+- after saving, you can save over the same slot without being prompted for confirmation
+- if you select a differe but previously filled slot, you will be prompted to confirm your selection
+- renaming a slot will not affect the saved state
+- loading a slot will load the saved state and close the menu
+- select a slot and clicking delete will prompt you for confirmation
 ***
-- has local save/load state functionality
-    - click the save icon in the menu to open the ui
-- * future plans: 
-    - manage unlimited save state slots
-    - cloud option
-***
-- has download/upload save file functionality in the `export` ui (select `export` in the menu)
-    - click `download` to save a json to your browser download folder
-    - click `upload` to upload a saved json to restore work session
-        - restores entire state including
-            - cards
-            - history for undo/redo
-            - saved states
-***
-- export ui
-    - each scenario/type combo should already be created and saved as `saved states`
-    - each sequeunce should already have the scenario, type, and music selected using the drop downs in the top right of each state
-    - in the export ui, select an appropriate saved state for each drop down
-    - click the `export` button to download StorySequences.json
-        - this file can be dropped into the PowerUp project folder
-
-- * export ui needs to remember options between sessions 
-    - don't include in saved state (we want these options to be per work session, not per state)
-    - should include in self and in the download/upload option?
-***
-- animation input field functionality is limited
-    - it works as a normal field and the data is managed, but no visible change will be made on the cards
-    - need a way to mark the animation information on the card for user feedback
-    - it may not be reasonable to try and recreate the actual animations
-    - maybe show animation name or index floating near the image?
-***
-***
-bugs/issues
-- saved state feedback for quick save 
-    - no way of easily knowing what state you are saving too
-- loading a saved state should set that as the target for quick save
-- can't properly reset the first card in the stack to a blank default
-- how to get `command` to work properly as a hotkey on mac
-    - it doesn't work the same as using `control` or `alt`
-    - clearly it can be done - see google docs etc.
+#Export Menu
+- Download
+    - this will prompt you to name your work session for download
+    - this json file is different from StorySequences.json
+        - it stores your current open work and saved states
+    - it will download to your normal web downloads folder
+- Upload
+    - this will open a file dialog where you can select a previously downloaded work session json
+    - it will restore your complete session, including current work, current history, and saved states
+- Export
+    - before selecting this option, fill out the grid in the lower section of the popup
+    - you should select saved states that are properly labeled for each intro and outro
+    - then, clicking export will export will download StorySequences.json to your normal web downloads folder
+        - StorySequences.json is formatted for use in PowerUp, just replace the same file in the project folder
+        - it's ok to leave empty fields before exporting, especially for development and testing
