@@ -1,6 +1,8 @@
 
-#PowerUp Story Designer
+# PowerUp Story Designer
+
 Created by: [@justKD](https://github.com/justKD)
+
 Contributors: (your name goes here)
 ***
 [Live Version](https://rawgit.com/justKD/powerup-story-sequence-designer/master/index.html)
@@ -18,7 +20,7 @@ It's features include:
 
 ***
 
-##Current State
+## Current State
 
 Best in Chrome. Works in Safari and Firefox. May work in Opera.
 
@@ -45,14 +47,14 @@ Best in Chrome. Works in Safari and Firefox. May work in Opera.
     - `ctrl + u` - prompt upload work session file
     - `delete` - delete the currently focused card (currently the only way to delete a card)
 ***
-##Basic Functionality
+## Basic Functionality
 - click the add button to add new cards
 - click a card or thumbnail to focus
 - new cards default to the `'no change'` setting for image and position fields
     - this means a new card will automatically visualize the image and position from the previous card
     - changing a prior card will auto-update any cards that would be affected due to a `no change` setting
 ***
-##Saved States
+## Saved States
 - clicking an empty slot and selecting save will prompt you to name the slot, return to save
 - after saving, you can save over the same slot without being prompted for confirmation
 - if you select a differe but previously filled slot, you will be prompted to confirm your selection
@@ -60,7 +62,7 @@ Best in Chrome. Works in Safari and Firefox. May work in Opera.
 - loading a slot will load the saved state and close the menu
 - select a slot and clicking delete will prompt you for confirmation
 ***
-##Export Menu
+## Export Menu
 - Download
     - this will prompt you to name your work session for download
     - this json file is different from StorySequences.json
