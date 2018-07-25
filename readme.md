@@ -25,6 +25,7 @@ It's features include:
 Best in Chrome. Works in Safari and Firefox. May work in Opera.
 
 **Media assets between this project and the main PowerUp repos will need to be manually kept in sync.**
+
 **Names for the assets need to be identical.**
 
 ***
