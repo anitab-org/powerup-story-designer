@@ -20,7 +20,7 @@ It's features include:
 
 ***
 
-## Current State
+## Current State (July 25, 2018)
 
 Best in Chrome. Works in Safari and Firefox. May work in Opera.
 
