@@ -1,12 +1,12 @@
 
 #PowerUp Story Designer
+Created by: [@justKD](https://github.com/justKD)
+Contributors: (your name goes here)
 ***
 [Live Version](https://rawgit.com/justKD/powerup-story-sequence-designer/master/index.html)
 ***
 
 This is a tool for creating and exporting automated step-through story sequences in PowerUp.
-
-Originally authored by: [@justKD](https://github.com/justKD)
 
 It's features include:
 - Undo/Redo History
