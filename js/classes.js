@@ -1,3 +1,6 @@
+/**
+ * Left or right side of a card has independent data
+ */
 class CardSide {
     constructor(text, image, position, animation) {
         this.text = text ? text : null
@@ -14,6 +17,9 @@ class CardSide {
     }
 }
 
+/**
+ * Data for each scene in the sequence, represented as a card in this app
+ */
 class Card {
     constructor(id, left, right) {
         this.left = (left instanceof CardSide) ? left : new CardSide()
@@ -22,6 +28,9 @@ class Card {
     }
 }
 
+/**
+ * Data for export and for inputs - value vs human-readable text
+ */
 class Option {
     constructor(value, text) {
         this.value = value
@@ -29,6 +38,9 @@ class Option {
     }
 }
 
+/**
+ * An app state bundled for travel
+ */
 class State {
     constructor(cards, thumbnails) {
         this.cards = cards ? cards : []
@@ -36,6 +48,9 @@ class State {
     }
 }
 
+/**
+ * App history consisting of work session states and th current index
+ */
 class History {
     constructor(states, index) {
         this.states = states ? states : []
@@ -43,6 +58,9 @@ class History {
     }
 }
 
+/**
+ * All aspects of the current app state necessary for export/import/travel
+ */
 class SavedState {
     constructor(cards, history, scenario, name) {
         this.cards = cards
@@ -52,6 +70,9 @@ class SavedState {
     }
 }
 
+/**
+ * A SavedState bundled with a unique id and index for use with the saved state slots and exporting
+ */
 class SavedStateItem {
     constructor(index, id, state) {
         this.index = index
@@ -60,6 +81,9 @@ class SavedStateItem {
     }
 }
 
+/**
+ * All aspects of the current work session (state, history, saved states, etc.) bundled for travel
+ */
 class SavedFile {
     constructor(cards, states, self) {
         this.cards = cards
@@ -68,6 +92,9 @@ class SavedFile {
     }
 }
 
+/**
+ * Cards and appropriate scenario information for export to StorySequences.json
+ */
 class ExportItem {
     constructor(scenario, cards) {
         this.scenario = scenario
@@ -75,6 +102,9 @@ class ExportItem {
     }
 }
 
+/**
+ * StorySequences.json contains two objects, intros and outros
+ */
 class StorySequenceJSON {
     constructor(intros, outros) {
         this.intros = intros
@@ -82,6 +112,9 @@ class StorySequenceJSON {
     }
 }
 
+/**
+ * An intro/outro is a sequence of steps (cards) and music
+ */
 class StorySequence {
     constructor(music, steps) {
         this.music = music
@@ -89,6 +122,9 @@ class StorySequence {
     }
 }
 
+/**
+ * Each sequence contains steps, each with a left and right event
+ */
 class StorySequenceStep {
     constructor(lftEvent, rgtEvent) {
         this.lftEvent = lftEvent
@@ -96,6 +132,9 @@ class StorySequenceStep {
     }
 }
 
+/**
+ * A left/right event defines the text, image, image position, and image animation to be used
+ */
 class StorySequenceEvent {
     constructor(txt, img, pos, ani) {
         this.txt = txt

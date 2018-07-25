@@ -17,6 +17,7 @@
 
 <body>
 
+  <!-- Preloader screen -->
   <div class="preloader-container">
     <div class='loader'>
       <div class='loader--dot'></div>
@@ -29,6 +30,7 @@
     </div>
   </div>
 
+  <!-- Help menu popup -->
   <div class="popup-container" id="help-popup">
     <div class="popup-container-inner" id="help-popup-inner">
       <div class="popup-close-button" id="help-close">
@@ -62,14 +64,6 @@
                 <i>Works in Firefox and Safari</i>
               </li>
             </ul>
-
-            <!-- <ul>
-              <strong>Current State</strong>
-              <br>
-              <br>
-              <li>Best in Chrome</li>
-              <li>Works in Firefox and Safari</li>
-            </ul> -->
 
             <ul>
               <strong>Basic Functions</strong>
@@ -158,8 +152,10 @@
     </div>
   </div>
 
+  <!-- Saved state menu popup -->
   <div class="popup-container" id="saved-state-popup">
     <div class="popup-container-inner" id="saved-state-popup-inner">
+
       <div class="popup-close-button" id="saved-state-close">
         <div>X</div>
       </div>
@@ -191,6 +187,7 @@
     </div>
   </div>
 
+  <!-- Export menu popup -->
   <div class="popup-container" id="import-export-popup">
     <div class="popup-container-inner" id="import-export-popup-inner">
       <div class="popup-close-button" id="import-export-close">
@@ -267,8 +264,8 @@
 
   </div>
 
-
-  <div class="app" style='display: none'>
+  <!-- Main app container -->
+  <div class="app hidden">
     <div class="main-container">
       <div class="top-container">
         <div class="thumbnail-container">
@@ -296,40 +293,42 @@
           </div>
         </div>
 
+        <!-- Menu in top right -->
         <div class="menu-container">
           <div class="menu-container-inner">
 
             <div class="menu-container-inner-inner">
 
               <div class="menu-item button" id="menu-undo">
-                undo
-                <!-- <img src="images/save.png" class="menu-button-image"> -->
+                <!-- undo -->
+                <img src="images/undo-icon.png" class="menu-button-image">
               </div>
 
               <div class="menu-item button" id="menu-redo">
-                redo
-                <!-- <img src="images/save.png" class="menu-button-image"> -->
+                <!-- redo -->
+                <img src="images/redo-icon.png" class="menu-button-image">
               </div>
 
               <div class="menu-item button" id="menu-states">
-                states
-                <!-- <img src="images/save.png" class="menu-button-image"> -->
+                <!-- states -->
+                <img src="images/saved-states-icon.png" class="menu-button-image">
               </div>
 
               <div class="menu-item button" id="menu-export">
-                export
-                <!-- <img src="images/save.png" class="menu-button-image"> -->
+                <!-- export -->
+                <img src="images/export-icon.png" class="menu-button-image">
               </div>
 
               <div class="menu-item button" id="menu-help">
-                help
-                <!-- <img src="images/save.png" class="menu-button-image"> -->
+                <!-- help -->
+                <img src="images/help-icon.png" class="menu-button-image">
               </div>
 
             </div>
 
             <menu-select-container id="menu-selects" v-bind:options="options"></menu-select-container>
 
+            <!-- end .menu-container-inner -->
           </div>
 
           <!-- end .menu-container -->
@@ -534,14 +533,11 @@
     <!-- end .app -->
   </div>
 
-
-  <!-- <script src="https://cdn.jsdelivr.net/npm/vue"></script> -->
   <script src="library/vue-2.5.16.js"></script>
   <script src="library/less.3.5.0.min.js"></script>
   <script src="library/jquery-3.3.1.min.js"></script>
   <script src="library/simplebar/simplebar-2.6.1.js"></script>
   <script src="library/noty/noty.min.js"></script>
-  <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.14.1/lodash.min.js"></script> -->
 
   <script src="js/classes.js"></script>
   <script src="js/components.js"></script>

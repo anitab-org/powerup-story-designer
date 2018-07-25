@@ -1,10 +1,6 @@
 /* **********************
     Utility and development helper functions
 ********************** */
-/**
- * Shortcut for console.log()
- */
-const print = e => console.log(e)
 
 /**
  * Copy an object without a reference to original object

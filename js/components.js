@@ -1,4 +1,7 @@
-let template = {
+/**
+ * Templates for Vue
+ */
+const template = {
     cardItem: (
         Vue.component('card-item', {
             props: ['card'],

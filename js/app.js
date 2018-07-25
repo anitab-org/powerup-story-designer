@@ -1,5 +1,5 @@
 /* **********************
-    Define Constants
+    Immutable Variables
 ********************** */
 
 const constant = {
@@ -107,7 +107,7 @@ const constant = {
 }
 
 /* **********************
-    Define Global Variables
+    Global Variables
 ********************** */
 
 let self = {
@@ -122,7 +122,7 @@ let self = {
 }
 
 /* **********************
-    Define App
+    App
 ********************** */
 
 const app = {
@@ -181,7 +181,6 @@ const app = {
                                 const del = _ => {
                                     cards.splice(cards.indexOf(card), 1)
                                     app.do.thumbnail.updateTrack()
-                                    print('Delete: ' + cardId)
                                 }
                                 cardId == elementId && del()
                             })
@@ -204,6 +203,9 @@ const app = {
             })
         ),
 
+        /**
+         * Saved State Popup Menu
+         */
         popupContentState: (
             new Vue({
                 el: '#popup-content-states',
@@ -242,6 +244,7 @@ const app = {
                     lastSaved: null,
                 },
                 methods: {
+                    /* Update the export popup menu options when a saved state is changed */
                     updateArrayOfExportOptions: function () {
                         const arr = [new Option('none', 'none')]
                         Object.values(this.savedStates).map(side => {
@@ -252,6 +255,7 @@ const app = {
                         app.components.popupContentExport.options = arr
                     },
 
+                    /* Set the text input values to the name of the appropriate saved state object */
                     setInputValues: function () {
                         Object.values(this.savedStates).map(side => {
                             side.map(item => {
@@ -260,10 +264,12 @@ const app = {
                         })
                     },
 
+                    /* Get the length of each side of the menu */
                     getSideCount: function () {
                         return this.savedStates.left.length
                     },
 
+                    /* Get the index of the selected state in relation to the entire set of states, not just per side */
                     getStateIndex: function () {
                         const target = this.focused.target.id
                         const index = target.split('+')[1] - 1
@@ -271,6 +277,7 @@ const app = {
                         return index
                     },
 
+                    /* Determine if a saved state should be on the left or right side of the menu and return an object */
                     leftOrRight: function () {
                         const states = this.savedStates
                         const index = this.getStateIndex()
@@ -285,6 +292,7 @@ const app = {
                         }
                     },
 
+                    /* Return the name of the selected state */
                     getStateName: function () {
                         const sides = this.leftOrRight()
                         const state = sides.index < this.getSideCount() ? sides.left : sides.right
@@ -292,6 +300,7 @@ const app = {
                         return state.state.name
                     },
 
+                    /* Focus a state and store its info for reference */
                     focus: function (e) {
                         const isItem = e.target.className == 'saved-state-slot-item'
 
@@ -323,6 +332,7 @@ const app = {
                         isItem && focus(e)
                     },
 
+                    /* De-focus all state slots */
                     removeFocus: function () {
                         this.focused = null
                         $('.saved-state-slot').removeClass('saved-state-slot-focus')
@@ -333,6 +343,16 @@ const app = {
                         $('#save-state-button').addClass('popup-content-button-faded')
                     },
 
+                    /* Wait for UI animations to complete before de-focusing */
+                    animateComplete: function (target) {
+                        $(target).addClass('saved-state-slot-rename')
+                        setTimeout(() => {
+                            $(target).removeClass('saved-state-slot-rename')
+                            this.removeFocus()
+                        }, 200);
+                    },
+
+                    /* Save if able else show error - called from html */
                     handleSave: function (e) {
                         const doSave = e => {
                             $(e.target).animateCss('pulse')
@@ -347,6 +367,7 @@ const app = {
                         this.focused ? doSave(e) : showError(e)
                     },
 
+                    /* Load if able else show error - called from html */
                     handleLoad: function (e) {
                         const handleLoad = e => {
                             $(e.target).animateCss('pulse')
@@ -361,6 +382,7 @@ const app = {
                         this.focused && this.getStateName() ? handleLoad(e) : showError(e)
                     },
 
+                    /* Rename if able else show error - called from html */
                     checkRename: function (e) {
                         $(e.target).animateCss('pulse')
 
@@ -372,8 +394,8 @@ const app = {
                         this.focused && this.getStateName() ? this.handleRename(e) : showError(e)
                     },
 
+                    /* Update UI for renaming */
                     handleRename: function (e) {
-                        print('rename')
                         const doRename = e => {
                             $('input[name="' + this.focused.target.id + '"]').focus().addClass('saved-state-slot-rename')
 
@@ -386,9 +408,10 @@ const app = {
                         this.focused && doRename(e)
                     },
 
+                    /* Change state name */
                     changeName: function (input) {
-                        print('change')
 
+                        /* Set the name for index on correct side */
                         const setName = _ => {
                             const set = side => {
                                 side.state.name = $(input).val()
@@ -397,11 +420,14 @@ const app = {
                             const sides = this.leftOrRight()
                             sides.index < this.getSideCount() ? set(sides.left) : set(sides.right)
 
+                            /* Update placeholder text as well */
                             $(input).attr("placeholder", $(input).val());
 
+                            /* Update the list of export options available in the export menu */
                             this.updateArrayOfExportOptions()
                         }
 
+                        /* If the name is left empty, set it to a generic name */
                         const setUntitled = _ => {
                             $(input).val('untitled')
                             setName()
@@ -412,6 +438,7 @@ const app = {
                         val && val.trim().length ? setName() : setUntitled()
                     },
 
+                    /* Delete if able else show error - called from html */
                     handleDelete: function (e) {
 
                         const doDelete = e => {
@@ -428,14 +455,6 @@ const app = {
                         }
 
                         this.focused && this.getStateName() ? doDelete(e) : showError(e)
-                    },
-
-                    animateComplete: function (target) {
-                        $(target).addClass('saved-state-slot-rename')
-                        setTimeout(() => {
-                            $(target).removeClass('saved-state-slot-rename')
-                            this.removeFocus()
-                        }, 200);
                     },
 
                     delete: function () {
@@ -471,9 +490,6 @@ const app = {
                         const saveAndComplete = _ => {
                             setTimeout(_ => {
                                 const val = $(this.focused.target).children(':first').val()
-                                print(val)
-                                //print(this.focused.target)
-                                print(this.lastSaved.name)
 
                                 const conf = val == this.lastSaved.name ? true : confirm('Are you sure you want to save over this file?')
 
@@ -499,6 +515,7 @@ const app = {
                         isEmpty ? saveToEmpty() : saveAndComplete()
                     },
 
+                    /* Save over the last saved state, without prompt, when appropriate */
                     saveLast: function () {
 
                         const save = _ => {
@@ -517,12 +534,9 @@ const app = {
                     },
 
                     load: function () {
-
                         const sides = this.leftOrRight()
                         const side = this.getStateIndex() < this.getSideCount() ? sides.left : sides.right
                         const state = side.state
-
-                        print(side)
 
                         app.components.cardContainer.cards = copy(state.cards)
                         self.history = copy(state.history)
@@ -533,15 +547,15 @@ const app = {
 
                         this.removeFocus()
                         app.do.popup.savedStates.hide()
-
-                        print('loaded')
-
                     },
 
                 }
             })
         ),
 
+        /**
+         * Export popup menu
+         */
         popupContentExport: (
             new Vue({
                 el: '#import-export-popup',
@@ -550,18 +564,21 @@ const app = {
                     exportSelects: {},
                 },
                 methods: {
+                    /* Prepare to download a work session json */
                     handleDownload: function (e) {
                         $(e.target).animateCss('pulse')
 
                         app.do.persistence.promptDownload()
                     },
 
+                    /* Prepare to upload a work session json */
                     handleUpload: function (e) {
                         $(e.target).animateCss('pulse')
 
                         app.do.persistence.promptUpload()
                     },
 
+                    /* Prepare to export StorySequences.json to be used in PowerUp */
                     handleExport: function (e) {
                         $(e.target).animateCss('pulse')
 
@@ -580,7 +597,7 @@ const app = {
                                         const i = index < count ? index - 1 : index - count - 1
 
                                         const state = side[i].state
-                                        print(state)
+
                                         const exportItem = new ExportItem(
                                             state.scenario,
                                             state.cards,
@@ -593,7 +610,6 @@ const app = {
                                 }
 
                                 typeof type != 'string' && handleInputType()
-
                             })
                         })
 
@@ -601,13 +617,11 @@ const app = {
                             app.do.show.notification('error', 'Select appropriate saved states in the drop down options. ')
                         }
 
-                        print(exportItems)
                         exportItems.length ? this.parseExportItems(exportItems) : showError()
                     },
 
+                    /* Parse local data into PowerUp format */
                     parseExportItems: function (items) {
-                        print('do parse')
-
                         const intros = {}
                         const outros = {}
 
@@ -656,11 +670,10 @@ const app = {
 
                         const json = new StorySequenceJSON(intros, outros)
 
-                        print(json)
                         this.downloadStorySequenceJSON(json)
-
                     },
 
+                    /* Download StorySequences.json */
                     downloadStorySequenceJSON: json => {
                         const data = JSON.stringify(json)
 
@@ -669,10 +682,9 @@ const app = {
                         a.href = URL.createObjectURL(file)
                         a.download = 'StorySequences.json'
                         a.click()
-
-                        //app.do.persistence.hideExportPopup()
                     },
 
+                    /* Setup proper references for inputs - this is to make it easier to add future scenarios */
                     referenceExportInputs: function (e) {
                         const containers = [
                             '#home-scenario-group',
@@ -804,25 +816,18 @@ const app = {
 
         $('.popup-container').hide();
 
-        // setTimeout(() => {
-        //     app.components.popupContentState.fillDefault()
-        //     print(app.do.get.savedStates())
-        // }, 1000);
-
-
-
         $(window).on("load", _ => {
             $('.app').show()
 
             /* For development only */
-            $('.preloader-container').fadeOut(100)
+            // $('.preloader-container').fadeOut(100)
 
             /* Handle preloader */
-            // setTimeout(_ => {
-            //     $('.preloader-container').animateCss('fadeOutDownBig', _ => {
-            //         $('.preloader-container').hide()
-            //     })
-            // }, 1500)
+            setTimeout(_ => {
+                $('.preloader-container').animateCss('fadeOutDownBig', _ => {
+                    $('.preloader-container').hide()
+                })
+            }, 1500)
         })
 
         /*
@@ -1232,8 +1237,6 @@ const app = {
                 a.click()
 
                 app.do.persistence.hideExportPopup()
-
-                print('Saved')
             },
 
             /* Handle uploading a file and restoring the state */
@@ -1274,8 +1277,6 @@ const app = {
 
                     Noty.closeAll()
                     app.do.persistence.hideExportPopup()
-
-                    print('Loaded')
                 }
 
                 input.type = 'file'
@@ -1525,8 +1526,6 @@ const app = {
                 $('.card').removeClass('focus')
                 self.focusedCard = constant.emptyFocusedCard
                 app.do.inputs.clear()
-
-                print('Focused: none')
             })
 
             /* Focus a card and store the index for global reference */
@@ -1602,8 +1601,6 @@ const app = {
         hotkeys: _ => {
 
             $(document).on('keydown', function (e) {
-
-                //print(e.which)
 
                 /* <DELETE> Delete the currently focused card */
                 const cardFocused = _ => e.which == 8 && handleDelKey()
