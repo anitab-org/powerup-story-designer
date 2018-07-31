@@ -5,7 +5,7 @@ Created by: [@justKD](https://github.com/justKD)
 
 Contributors: (your name goes here)
 ***
-[Live Version (master branch)](https://rawgit.com/justKD/powerup-story-sequence-designer/master/index.html)
+[Live Version (master branch)](https://rawgit.com/systers/powerup-story-designer/master/index.html)
 ***
 
 This is a tool for creating and exporting automated step-through story sequences in PowerUp.
