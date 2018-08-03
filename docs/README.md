@@ -19,41 +19,39 @@ _Also works in Safari and Firefox. Possibly with quirks._
 
 #### Contents
 - [Getting Started](#getting-started)
-    - [The Card Track](#the-card-track)
-        - [Basic Functions](#basic-functions)
-            - Add
-            - Focus
-            - Delete
-            - Scroll
-    - [The Editor](#the-editor)
-        - Text
-        - Image
-        - Position
-        - Animation 
-    - [The Thumbnail Track](#the-thumbnail-track)
-    - [The Menu](#the-menu)
-        - [Drop Downs](#drop-downs)
-            - Scenario Selection
-            - Type Selection
-            - Music Selection
-        - [Icons](#icons)
-            - Undo
-            - Redo
-            - Open Saved States
-            - Open Import/Export
-            - Open Help
-    - [Saved States](#saved-states)
-        - Saved
-        - Load
-        - Rename
+- [The Card Track](#the-card-track)
+    - [Basic Functions](#basic-functions)
+        - Add
+        - Focus
         - Delete
-    - [Import/Export](#importexport)
-        - Download
-        - Upload
-        - Export
-    - [Hotkeys](#hotkeys)
-  
-
+        - Scroll
+- [The Editor](#the-editor)
+    - Text
+    - Image
+    - Position
+    - Animation 
+- [The Thumbnail Track](#the-thumbnail-track)
+- [The Menu](#the-menu)
+    - [Drop Downs](#drop-downs)
+        - Scenario Selection
+        - Type Selection
+        - Music Selection
+    - [Icons](#icons)
+        - Undo
+        - Redo
+        - Open Saved States
+        - Open Import/Export
+        - Open Help
+- [Saved States](#saved-states)
+    - Saved
+    - Load
+    - Rename
+    - Delete
+- [Import/Export](#importexport)
+    - Download
+    - Upload
+    - Export
+- [Hotkeys](#hotkeys)
 
 ***
 
