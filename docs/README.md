@@ -43,7 +43,16 @@ _Also works in Safari and Firefox. Possibly with quirks._
             - Open Import/Export
             - Open Help
     - [Saved States](#saved-states)
+        - Saved
+        - Load
+        - Rename
+        - Delete
     - [Import/Export](#importexport)
+        - Download
+        - Upload
+        - Export
+    - [Hotkeys](#hotkeys)
+  
 
 
 ***
@@ -54,7 +63,9 @@ _Also works in Safari and Firefox. Possibly with quirks._
 
 ## Getting Started
 
-![](https://github.com/systers/powerup-story-designer/blob/master/docs/images/1-just-opened.png?raw=true)
+<!-- ![](https://github.com/justKD/Powerup-Story-Designer/blob/master/docs/images/1-just-opened.png?raw=true) -->
+
+![](https://github.com/justKD/Powerup-Story-Designer/blob/dev/docs/images/1-just-opened.png?raw=true)
 
 PowerUp Story Designer represents frames in a sequence as `Cards`.
 
@@ -73,7 +84,7 @@ A new `Step (Card)` is presented every time a user taps to advance the story, bu
 <!-- ![](https://github.com/justKD/Powerup-Story-Designer/blob/master/docs/images/2-ingame-example.gif?raw=true) -->
 
 <p align="center">
-  <img src="https://github.com/systers/powerup-story-designer/blob/master/docs/images/2-ingame-example.gif?raw=true"/>
+  <img src="https://github.com/justKD/Powerup-Story-Designer/blob/dev/docs/images/2-ingame-example.gif?raw=true"/>
 </p>
 
 ***
@@ -86,7 +97,7 @@ A new `Step (Card)` is presented every time a user taps to advance the story, bu
 
 The large, bottom-left container is the `Card Track`. It can hold any number of cards, and represents sequence frames in order.
 
-![](https://github.com/systers/powerup-story-designer/blob/master/docs/images/3-card-track.png?raw=true)
+![](https://github.com/justKD/Powerup-Story-Designer/blob/dev/docs/images/3-card-track.png?raw=true)
 
 - ##### Basic Functions
     - Add a card by clicking the `+` icon in the top left.
@@ -111,7 +122,7 @@ The large, bottom-left container is the `Card Track`. It can hold any number of 
 
 The editor is found in the bottom-right corner. 
 
-![](https://github.com/systers/powerup-story-designer/blob/master/docs/images/4-card-editor.png?raw=true)
+![](https://github.com/justKD/Powerup-Story-Designer/blob/dev/docs/images/4-card-editor.png?raw=true)
 
 Changes to the `Editor Fields` will be realized in the `Card Track` in real time.
 
@@ -140,7 +151,7 @@ Changes to the `Editor Fields` will be realized in the `Card Track` in real time
 
 ### The Thumbnail Track
 
-![](https://github.com/systers/powerup-story-designer/blob/master/docs/images/5-thumbnail-track.png?raw=true)
+![](https://github.com/justKD/Powerup-Story-Designer/blob/dev/docs/images/5-thumbnail-track.png?raw=true)
 
 The `Thumbnail Track` copies the contents of the `Card Track`. It also updates in real time, and serves as a convenience feature for navigating/finding `Cards`.
 
@@ -157,7 +168,7 @@ Similar to the `Card Track`, if there are enough `Thumbnails` to overflow the co
 ### The Menu
 
 <p align="center">
-  <img src="https://github.com/systers/powerup-story-designer/blob/master/docs/images/6-the-menu.png?raw=true" width=500/>
+  <img src="https://github.com/justKD/Powerup-Story-Designer/blob/dev/docs/images/6-the-menu.png?raw=true" width=500/>
 </p>
 
 #### Drop Downs
@@ -198,7 +209,19 @@ Similar to the `Card Track`, if there are enough `Thumbnails` to overflow the co
 
 ## Saved States
 
-![](https://github.com/systers/powerup-story-designer/blob/master/docs/images/7-saved-states-gui.png?raw=true)
+![](https://github.com/justKD/Powerup-Story-Designer/blob/dev/docs/images/7-saved-states-gui.png?raw=true)
+
+This page allows you to save the state of your work session. Use it to save versions of the same scenario/type as well as different documents altogether. These saved states are selected when exporting the PowerUp dataset, so you will likely want to have a state for each `Story Sequence` you want to include in the game.
+
+- Select a slot to enable the buttons.
+>
+- Selecting `Save` will prompt you to name the slot if it is empty, overwrite a slot if it has a different saved state, or simply update the saved state if it is the same as the current working session.
+>
+- Select a non-empty slot and select `Load` to restore that saved state.
+>
+- `Renaming` a slot does not affect the content of the saved state.
+>
+- `Deleting` a slot will revert it back to `empty`.
 
 ***
 
@@ -208,15 +231,36 @@ Similar to the `Card Track`, if there are enough `Thumbnails` to overflow the co
 
 ## Import/Export
 
-![](https://github.com/systers/powerup-story-designer/blob/master/docs/images/8-import-export-gui.png?raw=true)
+![](https://github.com/justKD/Powerup-Story-Designer/blob/dev/docs/images/8-import-export-gui.png?raw=true)
 
+This page allows you to `Download` and `Upload` work session files, as well as to `Export` saved states in a dataset for PowerUp.
 
+- The `Download` button will download a JSON file representing your entire work session. This includes the current `Story Sequence` being worked on, saved states, and history.
+>
+- `Upload` will open a file finder dialog. Choose a previously downloaded PowerUp Story Designer JSON in order to restore the work session.
+>
+> This feature can be used locally in order to save your work between sessions, but also should be used in the Github repo for collaborative work. A single master session should be kept under version control and treated in the same manner as other code documents, at least until another collaborative solution is implemented.
+>
+- The `Export` button will download a file called `StorySequences.json`. This is a drop-in file for PowerUp that is used by the `StorySequencePlayer` class.
+  - The downloaded file will contain all of the saved states selected in the bottom portion of this page. Match the scenario/type with the appropriate select field.
+  - It's ok to leave empty fields. They will be ignored, but the downloaded file will still be viable.
+  - Ensure that each saved state has the scenario/type properly set. The grid on this page is for convenience. The saved state is assigned a position in `StorySequences.json` based on the scenario/type selection actually in each saved state.
 
+***
 
+<!-- **************************** -->
+<!-- **************************** -->
+<!-- **************************** -->
 
+## Hotkeys
 
-
-
+- `ctrl + n` - add a new card
+- `ctrl + z` - undo action
+- `ctrl + y` - redo action
+- `ctrl + s` - save over last saved state
+- `ctrl + d` - prompt to download work session file
+- `ctrl + u` - prompt to upload work session file
+- `delete` - delete the currently focused card
 
 >
 >
