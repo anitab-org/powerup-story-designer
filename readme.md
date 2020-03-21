@@ -5,7 +5,7 @@ Created by: [@justKD](https://github.com/justKD)
 
 Contributors: (your name goes here)
 ***
-[Public Docs](http://systers.io/powerup-story-designer/)
+[Public Docs](https://anitab-org.github.io/powerup-story-designer/)
 >
 [Live App (master branch)](https://rawgit.com/systers/powerup-story-designer/master/index.html)
 ***
